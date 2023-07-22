@@ -4,6 +4,7 @@
 #include "../jdsp_header.h"
 void StereoEnhancementRefresh(JamesDSPLib *jdsp)
 {
+  jdsp_lock(jdsp);
 	WarpedPFB *subband0 = (WarpedPFB *)jdsp->sterEnh.subband[0];
 	WarpedPFB *subband1 = (WarpedPFB *)jdsp->sterEnh.subband[1];
 	initWarpedPFB(subband0, jdsp->fs, 5, 2);
@@ -11,15 +12,18 @@ void StereoEnhancementRefresh(JamesDSPLib *jdsp)
 	float ms = 1.2f; // 1.2 ms
 	for (unsigned int i = 0; i < 5; i++)
 		jdsp->sterEnh.emaAlpha[i] = 1.0f - powf(10.0f, (log10f(0.5f) / (ms / 1000.0f) / (jdsp->fs / (float)subband0->Sk[i])));
+  jdsp_unlock(jdsp);
 }
 void StereoEnhancementSetParam(JamesDSPLib *jdsp, float mix)
 {
+  jdsp_lock(jdsp);
 	jdsp->sterEnh.mix = mix;
 	jdsp->sterEnh.minusMix = 1.0f - jdsp->sterEnh.mix;
 	if (jdsp->sterEnh.mix > 0.5f)
 		jdsp->sterEnh.gain = 3.0f - jdsp->sterEnh.mix * 2.0f;
 	else
 		jdsp->sterEnh.gain = jdsp->sterEnh.mix * 2.0f + 1.0f;
+  jdsp_unlock(jdsp);
 }
 void StereoEnhancementConstructor(JamesDSPLib *jdsp)
 {
