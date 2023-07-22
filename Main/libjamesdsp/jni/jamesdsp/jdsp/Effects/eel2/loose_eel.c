@@ -8,8 +8,8 @@
 #ifdef _WIN32
 #include <vld.h>
 #endif
-void NSEEL_HOSTSTUB_EnterMutex() { }
-void NSEEL_HOSTSTUB_LeaveMutex() { }
+//void NSEEL_HOSTSTUB_EnterMutex() { }
+//void NSEEL_HOSTSTUB_LeaveMutex() { }
 int32_t runcode(NSEEL_VMCTX m_vm, const char *codeptr, int32_t showerr, const char *showerrfn, int32_t canfree, int32_t ignoreEndOfInputChk, int32_t doExec)
 {
 	NSEEL_CODEHANDLE code = NSEEL_code_compile_ex(m_vm, codeptr, 0, canfree ? 0 : NSEEL_CODE_COMPILE_FLAG_COMMONFUNCS);
