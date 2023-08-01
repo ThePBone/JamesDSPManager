@@ -8,6 +8,15 @@
 #include "Effects/eel2/ns-eel.h"
 #include "jdsp_header.h"
 #define TAG "EffectDSPMain"
+
+#ifdef __ANDROID_API__
+#if __ANDROID_API__ < __ANDROID_API_J_MR2__
+double log2(double x) {
+    return (log(x)*1.4426950408889634);
+}
+#endif
+#endif
+
 // Range: 0x800000, 0x7fffff
 int32_t i32_from_p24_big_endian(const uint8_t *packed24)
 {
