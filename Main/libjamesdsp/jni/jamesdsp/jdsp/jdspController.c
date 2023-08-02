@@ -259,12 +259,12 @@ void JamesDSPReallocateBlock(JamesDSPLib *jdsp, size_t n)
 void JamesDSPRefreshConvolutions(JamesDSPLib *jdsp, char refreshAll)
 {
     // Temporary(?) bug fix when benchmarks are off
-   /* if(!benchmarkEnable) {
+   if(!benchmarkEnable) {
 #ifdef DEBUG
         __android_log_print(ANDROID_LOG_INFO, TAG, "ignoring call to JamesDSPRefreshConvolutions(...) because benchmarks are disabled");
 #endif
         return;
-    }*/
+    }
 
 #ifdef DEBUG
 	__android_log_print(ANDROID_LOG_INFO, TAG, "Buffer size changed, update convolution object to maximize performance");
