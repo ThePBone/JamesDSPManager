@@ -136,6 +136,11 @@ struct opcodeRec
 	// OPCODETYPE_FUNC* with fntype=FUNCTYPE_EELFUNC
 	const char *relname;
 };
+float *dataSectionToRamDisk(void *opaque, size_t len)
+{
+	compileContext *c = (compileContext*)opaque;
+	return c->ram_state + (NSEEL_RAM_ITEMSPERBLOCK - len);
+}
 static void *newTmpBlock(compileContext *ctx, int32_t size)
 {
 	const int32_t align = 8;
@@ -927,7 +932,7 @@ typedef struct
 	double *path, *z;
 	double imOld;
 } IIRHilbert;
-void ProcessIIRHilbert(IIRHilbert *hil, double Xi, double *re, double *im)
+static inline void ProcessIIRHilbert(IIRHilbert *hil, double Xi, double *re, double *im)
 {
 	double imTmp;
 	imTmp = *re = Xi;
@@ -950,26 +955,6 @@ static float NSEEL_CGEN_CALL iirHilbertProcess(float *blocks, float *offptr, flo
 	out[0] = re;
 	out[1] = im;
 	return 2;
-}
-void InitIIRHilbert2(IIRHilbert *hil, unsigned int numStages, double transitionHz, double fs)
-{
-	unsigned int i;
-	double transition = transitionHz / fs;
-	hil->stages = numStages;
-	unsigned int numCoefs = numStages << 1;
-	double *coefs = (double *)malloc(numCoefs * sizeof(double));
-	hil->path = (double *)malloc(numCoefs * sizeof(double));
-	hil->z = (double *)malloc(2 * hil->stages * 2 * sizeof(double));
-	memset(hil->z, 0, 2 * hil->stages * 2 * sizeof(double));
-	compute_coefs_spec_order_tbw(coefs, numCoefs, transition);
-	// Phase reference path coefficients
-	for (i = 1; i < numCoefs; i += 2)
-		hil->path[i >> 1] = coefs[i];
-	// +90 deg path coefficients
-	for (i = 0; i < numCoefs; i += 2)
-		hil->path[hil->stages + (i >> 1)] = coefs[i];
-	free(coefs);
-	hil->imOld = 0.0;
 }
 static float NSEEL_CGEN_CALL iirHilbertInit(void *opaque, INT_PTR num_param, float **parms)
 {
