@@ -550,7 +550,7 @@ int32_t EffectDSPMainCommand(EffectDSPMain *dspmain, uint32_t cmdCode, uint32_t 
 				for (int i = 0; i < 7; i++)
 					LOGI("%1.7lf %1.7lf; ", param[i], param[i + 7]);
 #endif
-				CompressorSetParam(&dspmain->jdsp, timeconstant, granularity, tfresolution, 0);
+				CompressorSetParam(&dspmain->jdsp, timeconstant, granularity, tfresolution);
 				CompressorSetGain(&dspmain->jdsp, param, param + 7, 1);
 				*replyData = 0;
 				return 0;

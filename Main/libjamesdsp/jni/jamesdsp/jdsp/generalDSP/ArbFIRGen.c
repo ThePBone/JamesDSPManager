@@ -160,7 +160,7 @@ float *ArbitraryEqLinearPhase(ArbitraryEq *arbEq, float fs)
 }
 unsigned int InitArbitraryEq(ArbitraryEq* arbEq, int isLinearPhase)
 {
-	LLbitReversalTbl(arbEq->mBitRev, MUL2FILTERLEN);
+	fhtbitReversalTbl(arbEq->mBitRev, MUL2FILTERLEN);
 	fhtsinHalfTblFloat(arbEq->mSineTab, MUL2FILTERLEN);
 	arbEq->nodesCount = 0;
 	if (!isLinearPhase)
