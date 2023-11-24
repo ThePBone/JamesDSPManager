@@ -10,7 +10,6 @@ void CrossfeedConstructor(JamesDSPLib *jdsp)
 }
 void CrossfeedDestructor(JamesDSPLib *jdsp)
 {
-    jdsp_lock(jdsp);
 	if (jdsp->advXF.conv[0])
 	{
 		FFTConvolver2x4x2Free(jdsp->advXF.conv[0]);
@@ -33,7 +32,6 @@ void CrossfeedDestructor(JamesDSPLib *jdsp)
 		free(jdsp->advXF.convLong_S_S);
 		jdsp->advXF.convLong_S_S = 0;
 	}
-    jdsp_unlock(jdsp);
 }
 void CrossfeedProcessFFTConvolver2x4x2(JamesDSPLib *jdsp, size_t n)
 {
